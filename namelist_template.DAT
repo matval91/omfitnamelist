@@ -1,0 +1,204 @@
+!===================================
+!General setting & plot options
+!===================================
+nshot=$SHOT
+tinit=$TBEG
+ftime=$TEND
+nzones  = 40
+nzone_nb= 40
+nzone_fp= 20
+nzone_fb= 10
+sedit=$0.01   ! determines the time spacing between profile data output records.
+stedit=$0.01  ! determines the time spacing between scalar data output records
+tgrid1=$0.01
+tgrid2=$0.01
+NLBCCW=F  ! orientation of B (.TRUE. for counter-clockwise)
+NLJCCW=T  ! orientation of Ip (.TRUE. for counter-clockwise)
+INPUTDIR='$SHOT'
+NBI_PSERVE=1
+
+!=====================!
+! Anomalous diffusion !
+!=====================!
+ !NMDIFB=0;1;2;3 anom. diff. off; Db=min(CDIFB, max(BDIFB,(ADIFB*De))) and De 
+ !from power balance; De with Ware pinch correction; Db from D2F Ufile (2D)
+ nmdifb=0
+ !For a constant anomalous diffusivity, set BDIFB=CDIFB=constant.
+ CDIFB=0.0E+04
+ BDIFB=0.0E+04
+ EDIFBE=0.1E+05, 0.9E+05  !Energies
+ FDIFBE=1.0E+00, 1.0E+00  !Difb vs. E multipliers
+ nkdifb=1       !1;2;3 apply model to beam & rf; fusion product; all fast ions
+
+!=======================
+!Power balance
+!=======================
+nlti2=T    !! skip the Ti prediction
+nltipro=T  !! skip the Ti prediction
+nprad=1    !! use prebol and extbol for radiated power
+fiefac=1.0 !!fiefac=1 takes ti data as used ti
+prfac=1.0000000
+alph0e=0.0000000       !! electron convection power loss
+alph0i=0.0000000       !! ion convection power loss
+
+
+!=============
+! Rotation
+!=============
+nlvphi=T
+NLOMGVTR=.T     ! Input profile refers to impurity rotation
+
+!=======================
+!MHD equilibrium
+!======================= 
+!exp=AUGD
+!dia=EQI
+!ed=0
+nefld=7                !Initialize the q profile from experimental data
+levgeo=6
+levgb=3
+levtrk=2
+nlmdif=T
+!If good Zeff data is available, NLPCUR=.T and NLVSUR=.F are usually
+!used.  This matches the plasma current and predicts the surface
+!voltage which is then later compared to measurement.
+nlpcur=T               ! q-profile is modified based on the plasma current
+vsuri=1.	       ! input loop voltage (is free anyway!)
+nlvsur=F               ! false for free surface voltage
+nlspiz=F               ! false for neoclassical resisitivity, true for spitzer
+vlpmin=-1.             ! minimum voltage allowed
+nlres_sau=T            ! true for neoclassical resistivity by O. Sauter
+nletaw=F               ! true for resistivity based on the NCLASS code
+nlboot=T               ! Use bootstrap current
+nlboot_sau=T           ! true for bootstrap current as published by O. Sauter
+		       ! O.Sauter and C.Angioni, Phys of Plas 6(7), 2834 (1999)
+nlbootw=F              ! true for bootstrap current by NCLASS neoclassical code
+!! NBI CURRENT DRIVE SETTINGS:
+!  NMCURB=1 is neoclassical: Hirshman, Phys. Fluids vol. 21 No. 8 Aug 1978
+!  NMCURB=2 is Spitzer, (1-Zb/Zeff), (no trapping correction)
+!  NMCURB=3 is updated neoclassical:  Y.R. Lin-Liu, 
+!                F.L. Hinton, Phys. Plasmas 4 (1997) 4179
+!  NMCURB  = 4, shielding calculation by Honda M., Kikuchi M., Azumi M.
+!  "Collisionality dependence on shielding factor of beam driven current"
+!  Nuclear Fusion, submitted by October 2011. Martix inversion method are used
+!  to include collisionality dependence on a shielding factor
+!  NMCURB=0, no fast ion driven current.
+nmcurb=3           
+NLQLIM0=T
+QLIM0=8.
+
+!=========================
+! ION SPECIES            !
+!=========================
+ng=3               ! initial number of plasma species (H,D,He)
+ngmax=3            ! maximum number
+aplasm=2., 1., 4.  ! atomic weight of this species
+backz=1.,1.,2.     ! defines the charge of this species
+frac=0.95,0.04,0.01  ! inital relative fraction of his gas
+gfrac=0.95,0.04,0.01 ! inital gasflow
+rfrac=0.95,0.04,0.01 ! species distribution of recycling source
+!impurities
+aimp=12.
+xzimp=6.
+nlzfin=T               ! define zeff from 1D input file
+nlzfi2=F               ! define zeff from 2D input file
+! =============================!
+! Vaccum vessel
+! =============================!
+nlinlm =8
+ALNLMR(1) = 113.6
+ALNLMY(1) =   0.0
+ALNLMT(1) =  90.0
+ALNLMR(2) = 109.3
+ALNLMY(2) =  60.0
+ALNLMT(2) =  50.0
+ALNLMR(3) =  83.3
+ALNLMY(3) =  75.0
+ALNLMT(3) =   0.0
+ALNLMR(4) =  66.6
+ALNLMY(4) =  74.5
+ALNLMT(4) = -45.0
+ALNLMR(5) =  62.4
+ALNLMY(5) =   0.8
+ALNLMT(5) =  90.0
+ALNLMR(6) =  63.0
+ALNLMY(6) = -70.9
+ALNLMT(6) =  44.0
+ALNLMR(7) =  76.7
+ALNLMY(7) = -75.0
+ALNLMT(7) =   0.0
+ALNLMR(8) = 102.7
+ALNLMY(8) = -67.9
+ALNLMT(8) = -50.0
+
+!==========
+! Neutrals
+!==========
+nsomod=1        !! use FRANTIC analytic neutral transport model
+fh0esc=0.88     !! fraction of escaping neutrals to return as warm neutrals
+recycb=0.88	!! fraction of recyling neutrals to return as warm ones
+mod0ed=1        !! use ion temperature at the edge the recycling sources energy
+tiedge=100.
+E0IN(3)=2.2     !! temperature of warm neutrals
+nlreco=T        !! volume recombination
+tauph=0.005, 0.005, 0.005 !! plasma particle confinment time
+taupo=0.005          !! impurity confinement time
+taupmn=0.001         !! minimum confinement time
+!===================================
+!Coordinate for input profiles
+!===================================
+!!-5 -> data vs. flux coordinate xi  = SQRT(tflux/tfluxbdy)             
+!!-7 -> data vs. flux coordinate xpsi=SQRT(psipol/psipol(bdy))
+ NRIGRB = 5
+ NSYGRB = 0
+ NRIPRS = 5
+ NSYPRS = 0
+ NRIQPR = 5
+ NSYQPR = 0
+ NRINER = 5
+ NSYNER = 0
+ NRITER = 5
+ NSYTER = 0
+ NRITI2 = 7
+ NSYTI2 = 0
+ NRIVTR = 7
+ NSYVTR = 0
+!=========================================
+! INCLUDE FILES                          !
+!=========================================
+ PRECUR = 'OMF'
+ EXTCUR = 'CUR'
+ PRERBZ = 'OMF'
+ EXTRBZ = 'RBZ'
+ PREL2B = 'OMF'
+ EXTL2B = 'L2B'
+ PREVSF = 'OMF'
+ EXTVSF = 'VSF'
+ PREGRB = 'OMF'
+ EXTGRB = 'GRB'
+ PREMMX = 'OMF'
+ EXTMMX = 'MMX'
+ PREPLF = 'OMF'
+ EXTPLF = 'PLF'
+ PREQPR = 'OMF'
+ EXTQPR = 'QPR'
+ PRELIM = 'OMF'
+ EXTLIM = 'LIM'
+ PREPF0 = 'OMF'
+ EXTPF0 = 'PF0'
+ PREPRS = 'OMF'
+ EXTPRS = 'PRS'
+ PRETRF = 'OMF'
+ EXTTRF = 'TRF'
+ PREZEF = 'OMF'
+ EXTZEF = 'ZEF'
+ PRENER = 'OMF'
+ EXTNER = 'NER'
+ PRETER = 'OMF'
+ EXTTER = 'TER'
+ PRETI2 = 'OMF'
+ EXTTI2 = 'TI2'
+ PREVTR = 'OMF'
+ EXTVTR = 'VTR'
+ PRENB2 = 'OMF'
+ EXTNB2 = 'NB2'
